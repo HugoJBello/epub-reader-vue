@@ -12,7 +12,7 @@ import Epub from 'epubjs'
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
   public book :any;
-  public epubUrl = "/public/test.epub";
+  public epubUrl = "http://epubtest.org/books/Fundamental-Accessibility-Tests-Basic-Functionality-v1.0.0.epub";
   mounted(){
       this.book = Epub(this.epubUrl) as any;
       const rendition = this.book.renderTo("viewer");
