@@ -16,8 +16,8 @@ import {Ebook} from '../models/ebook'
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
   public epubUrl = "https://s3.amazonaws.com/moby-dick/moby-dick.epub";
-  public ebook: Ebook = {url:this.epubUrl}
-  public book :any;
+  public ebook: Ebook = {url:this.epubUrl, cfi:"epubcfi(/6/16[xchapter_002]!/4/2/2/2/2[c002p0000]/1:0)"} as Ebook;
+  public book: any;
 
   mounted(){
       
