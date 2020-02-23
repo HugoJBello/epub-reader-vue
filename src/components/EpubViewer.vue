@@ -7,6 +7,7 @@
       </div>
     </v-col>
     <v-col name="book-content" cols="9">
+      {{sectionLabel}}
     </v-col>
     <v-col name="next-btn" :goToNextPage="goToNextPage" cols="1">
       <div id="next" @click="goToNextPage">
@@ -41,8 +42,15 @@ export default class EpubViewer extends Vue {
   public contentBookModify: number = 0;
   public locations:any;
   public ready= false;
-  public progressValue:number =0;
 
+  public nextLabel: string=""
+  public nextNav: any
+  public prevNav: any
+  public prevLabel: string =""
+  public sectionNav: any
+  public sectionLabel: string=""
+
+  public progressValue:number =0;
   public totalPages: number = 1;
   public currentPage: number = 1;
   public currentCfi:string = this.ebook.cfi || "";
@@ -76,6 +84,7 @@ export default class EpubViewer extends Vue {
 
     await this.book.ready.all;
 
+    this.loadSections()
     this.initSwipeAction();
   
 
@@ -126,6 +135,36 @@ export default class EpubViewer extends Vue {
     if (cfi){
     this.rendition.display(cfi)
     }
+  }
+
+  loadSections(){
+    this.rendition.on("rendered", (section:any)=>{
+      const nextSection = section.next();
+      const prevSection = section.prev();
+      this.sectionNav = this.book.navigation.get(section.href);
+      this.sectionLabel = this.sectionNav.label;
+
+      if(nextSection) {
+        this.nextNav = this.book.navigation.get(nextSection.href);
+        if(this.nextNav) {
+          this.nextLabel = this.nextNav.label;
+        } else {
+          this.nextLabel = "next";
+        }
+      } 
+
+      if(prevSection) {
+        this.prevNav = this.book.navigation.get(prevSection.href);
+
+        if(this.prevNav) {
+          this.prevLabel = this.prevNav.label;
+        } else {
+          this.prevLabel = "previous";
+        }
+
+      } 
+      console.log(this.sectionLabel, this.sectionNav, this.nextLabel, this.nextNav, this.prevNav, this.prevLabel)
+    });
   }
 
   initSwipeAction(){
